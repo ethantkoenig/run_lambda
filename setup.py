@@ -31,6 +31,6 @@ setup(
     install_requires=["six"],
     test_suite="tests",
     entry_points={
-        'console_scripts': ['run_lambda=run_lambda_cli']
+        'console_scripts': ['run_lambda=run_lambda.__main__:main']
     }
 )
