@@ -14,6 +14,8 @@ class RunLambdaTest(unittest.TestCase):
             hex_string = utils.random_hex(length)
             self.assertIsInstance(hex_string, str)
             self.assertEqual(len(hex_string), length)
+            for character in hex_string:
+                self.assertIn(character, "0123456789abcdef")
         for _ in range(100):
             request_id = utils.random_aws_request_id()
             self.assertIsInstance(request_id, str)

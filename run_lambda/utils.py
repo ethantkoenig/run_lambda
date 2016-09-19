@@ -14,7 +14,9 @@ def random_log_stream_name():
 
 
 def random_hex(length):
-    result = str(binascii.b2a_hex(os.urandom((length + 1) // 2)))
+    result = binascii.b2a_hex(os.urandom((length + 1) // 2))
+    if not isinstance(result, str):
+        result = result.decode("ascii")
     if length % 2 == 1:
         return result[:-1]
     return result
