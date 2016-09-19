@@ -11,7 +11,7 @@ with open(path.join(here, "README.rst"), "r") as f:
 
 setup(
     name="run_lambda",
-    version="0.1.0",
+    version="0.1.1",
     description="Run AWS Lambda functions locally",
     long_description=long_description,
     url="https://github.com/ethantkoenig/python-run-lambda",
