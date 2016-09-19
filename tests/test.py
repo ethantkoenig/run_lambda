@@ -2,9 +2,12 @@ import unittest
 
 import time
 
+import math
+
 import run_lambda.utils as utils
 import run_lambda.context as context_module
 import run_lambda.call as call_module
+import tests.square_root as square_root
 
 
 class RunLambdaTest(unittest.TestCase):
@@ -146,10 +149,24 @@ class RunLambdaTest(unittest.TestCase):
             ))\
             .build()
         result = call_module.run_lambda(handle, event, context, timeout_in_seconds=1)
-        self.assertIsNotNone(result, call_module.LambdaResult)
+        self.assertIsInstance(result, call_module.LambdaResult)
         self.assertFalse(result.timed_out)
         self.assertIsNone(result.value)
         self.assertIsInstance(result.exception, ValueError)
+
+    def test_patches(self):
+        event = {"number": 100}
+
+        def mock_sqrt(n):
+            return -1
+        result = call_module.run_lambda(square_root.handle, event,
+                                        patches={"math.sqrt": mock_sqrt},
+                                        timeout_in_seconds=10)
+        self.assertIsInstance(result, call_module.LambdaResult)
+        self.assertFalse(result.timed_out)
+        self.assertIsNone(result.exception)
+        self.assertEqual(result.value, -1)
+        self.assertGreater(math.sqrt(100), 9.9)  # check patch is gone
 
 
 if __name__ == "__main__":

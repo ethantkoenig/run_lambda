@@ -1,4 +1,5 @@
 import logging
+import mock
 import multiprocessing
 import resource
 import signal
@@ -11,7 +12,7 @@ import sys
 from run_lambda import context as context_module
 
 
-def run_lambda(handle, event, context=None, timeout_in_seconds=None):
+def run_lambda(handle, event, context=None, timeout_in_seconds=None, patches=None):
     """
     Run the Lambda function ``handle``, with the specified arguments and
     parameters.
@@ -22,6 +23,8 @@ def run_lambda(handle, event, context=None, timeout_in_seconds=None):
         default context object will be used.
     :param int timeout_in_seconds: timeout in seconds. If not provided, the
         function will be called with no timeout
+    :param dict patches: dictionary of name-to-value mappings that will be
+        patched inside the Lambda function
     :return: value returned by Lambda function
     :rtype: LambdaResult
     """
@@ -30,13 +33,20 @@ def run_lambda(handle, event, context=None, timeout_in_seconds=None):
 
     queue = multiprocessing.Queue(1)
     process = multiprocessing.Process(target=execute,
-                                      args=(queue, handle, event, context, timeout_in_seconds))
+                                      args=(queue, handle, event, context, timeout_in_seconds, patches))
     process.start()
     process.join()
     return queue.get(block=False)
 
 
-def execute(queue, handle, event, context, timeout_in_seconds=None):
+def execute(queue, handle, event, context, timeout_in_seconds=None, patch_dict=None):
+    if patch_dict is None:
+        patches = []
+    else:
+        patches = [mock.patch(name, value) for name, value in patch_dict.items()]
+    for patch in patches:
+        patch.start()
+
     setup_timeout(context, timeout_in_seconds)
 
     builder = None
@@ -52,6 +62,8 @@ def execute(queue, handle, event, context, timeout_in_seconds=None):
         result = LambdaResult(builder.build(), exception=e)
     finally:
         signal.alarm(0)  # disable any pending alarms
+        for patch in patches:
+            patch.stop()
         queue.put(result, block=False)
 
 
