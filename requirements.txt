@@ -1,2 +1,4 @@
+memory_profiler
 mock
+psutil
 six

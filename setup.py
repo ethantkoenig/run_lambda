@@ -28,7 +28,7 @@ setup(
     ],
     keywords=["aws", "lambda", "run", "local", "locally"],
     packages=find_packages(),
-    install_requires=["six"],
+    install_requires=["memory_profiler", "mock", "psutil", "six"],
     test_suite="tests",
     entry_points={
         'console_scripts': ['run_lambda=run_lambda.__main__:main']

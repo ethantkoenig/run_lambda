@@ -1,7 +1,7 @@
 import logging
 import mock
 import multiprocessing
-import resource
+import memory_profiler
 import signal
 import timeit
 import traceback
@@ -31,20 +31,9 @@ def run_lambda(handle, event, context=None, timeout_in_seconds=None, patches=Non
     if context is None:
         context = context_module.MockLambdaContext.Builder().build()
 
-    queue = multiprocessing.Queue(1)
-    process = multiprocessing.Process(target=execute,
-                                      args=(queue, handle, event, context, timeout_in_seconds, patches))
-    process.start()
-    process.join()
-    return queue.get(block=False)
-
-
-def execute(queue, handle, event, context, timeout_in_seconds=None, patch_dict=None):
-    if patch_dict is None:
-        patches = []
-    else:
-        patches = [mock.patch(name, value) for name, value in patch_dict.items()]
-    for patch in patches:
+    patches_list = [] if patches is None \
+        else [mock.patch(name, value) for name, value in patches.items()]
+    for patch in patches_list:
         patch.start()
 
     setup_timeout(context, timeout_in_seconds)
@@ -62,9 +51,9 @@ def execute(queue, handle, event, context, timeout_in_seconds=None, patch_dict=N
         result = LambdaResult(builder.build(), exception=e)
     finally:
         signal.alarm(0)  # disable any pending alarms
-        for patch in patches:
+        for patch in patches_list:
             patch.stop()
-        queue.put(result, block=False)
+        return result
 
 
 def setup_timeout(context, timeout_in_seconds=None):
@@ -197,7 +186,7 @@ class LambdaCallSummary(object):
             self._context = context
 
             self._start_time = timeit.default_timer()
-            self._start_maxrss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+            self._start_mem = memory_profiler.memory_usage()[0]
 
             self._log = StringIO()
             self._log.write("START RequestId: {r} Version: {v}\n".format(
@@ -210,10 +199,8 @@ class LambdaCallSummary(object):
             sys.stdout = self._log
 
         def build(self):
-            sys.__stdout__.write("Building output")  # TODO
-
             end_time = timeit.default_timer()
-            end_maxrss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+            end_mem = memory_profiler.memory_usage()[0]
 
             sys.stdout = self._previous_stdout
 
@@ -223,7 +210,7 @@ class LambdaCallSummary(object):
             duration_in_millis = int(1000 * (end_time - self._start_time))
             # The memory overhead of setting up the AWS Lambda environment
             # (when actually run in AWS) is roughly 14 MB
-            max_memory_used_in_mb = (end_maxrss - self._start_maxrss) / 1024 + 14
+            max_memory_used_in_mb = (end_mem - self._start_mem) / 1048576 + 14
 
             self._log.write(
                 "REPORT RequestId: {r}\tDuration: {d} ms\t"
