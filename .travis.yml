@@ -1,0 +1,18 @@
+language: python
+python:
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
+install:
+- pip install -r requirements.txt
+- pip install coveralls
+script: coverage run --source=run_lambda setup.py test
+after_success: coveralls
+deploy:
+  provider: pypi
+  user: ethantkoenig
+  password:
+    secure: gtaXW38uklklnY+MM/D01+jdU2mLWlgu9diulQufQIuBFViDT+qlJXccY1f3sjvyUKaOwJ1LlpvBdmnEuR0Vh/m/xz4hZ8YdSaQI8wuuUlR6+6q/aoAqkfz2uhJxLmto1wgT+MYQBAoLhmZmUUdSaR4RP2OdyCAReyXPknRPSS6bVPmMZg5u9cxbERGoVPVrHaEHdtCJK2G9vR5DHUHjJVdrpCSdsaL6aXtGRbFrrAYYUfadBZ8n/wEKCWZr1MjzzsVEE49d3DCY+SdR2NCUi+CSn75tQfMhRCPQ4d09e9JYyrs5AIGeRAXjr05j2U4I6F4ydkPrQyqPvzpvP5LnLs+G3avwGFBc+cPy7wOg1Qj6oBe67cNZVF2YZxDFPpMWet21WY+iAtpdp1BF0ZP58JV6QyhESTs3D1BACJkruIUh+nZWSISYbqqv635l7adcWejzT6hXBb8o0+y2dXfYCsSAFHwhsgmkv5wzT379MvryJ6SlKvWs9bJZRdLLfzqn/E4COLdzPpC3sDz0b3z6BqbizduCTFLVYV8heqVoy9ByEHoTaz1xagM6tvqWKRf+WTGayDYULKrkkifx09gIpv3nflryTS5IU27vH3WSZlFqOiU6c9BFO9p5stxbBP2F/hBeT9dStIa0TJNMsrVag7v1kYwv8WwS3Ij1rcNdmjM=
+  on:
+    tags: true
