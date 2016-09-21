@@ -16,7 +16,7 @@ Suppose we have a Lambda function in ``my_function.py``::
         n = event["number"]
         scale = random.randint(1, 10)
         product = n * scale
-        logger.info("Log group name: {}".format(context.log_group_name)
+        logger.info("Log group name: %s", context.log_group_name)
         return product
 
 
@@ -39,3 +39,4 @@ We can write a unit test for the function::
             result = run_lambda.run_lambda(my_function.handler, event, context,
                                            patches=patches)
             self.assertEqual(result.value, 50)
+            self.assertIn(log_group_name, result.summary.log)
