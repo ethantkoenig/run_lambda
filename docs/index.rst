@@ -15,6 +15,7 @@ Contents:
    context
    call
    cli
+   examples
 
 Indices and tables
 ==================
