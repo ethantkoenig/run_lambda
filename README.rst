@@ -25,4 +25,4 @@ You can also download the source from
 Documentation
 -------------
 
-Documentation can be found `here <https://www.pythonhosted.org/run-lambda>`_
+Documentation for the package can be found `here <https://www.pythonhosted.org/run-lambda>`_.
