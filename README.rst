@@ -21,3 +21,8 @@ The easiest way to install is via ``pip``::
 
 You can also download the source from
 `Github <https://www.github.com/ethantkoenig/python_run_lambda>`_.
+
+Documentation
+-------------
+
+Documentation can be found `here <https://www.pythonhosted.org/run-lambda>`_
