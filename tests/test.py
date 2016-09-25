@@ -1,12 +1,12 @@
+import math
+import time
 import unittest
 
-import time
+import six
 
-import math
-
-import run_lambda.utils as utils
-import run_lambda.context as context_module
 import run_lambda.call as call_module
+import run_lambda.context as context_module
+import run_lambda.utils as utils
 import tests.square_root as square_root
 
 
@@ -125,6 +125,11 @@ class RunLambdaTest(unittest.TestCase):
         self.assertFalse(result.timed_out)
         self.assertIsNone(result.exception)
         self.assertEqual(result.value, 105)
+        self.assertTrue(result.summary.duration_in_millis >= 0)
+        self.assertTrue(result.summary.max_memory_used_in_mb >= 0)
+        self.assertIsInstance(result.summary.log, str)
+        output = six.StringIO()
+        result.display(output)
 
     def test_timeout_call(self):
         def handle(event_arg, context_arg):
