@@ -35,7 +35,7 @@ We can write a unit test for the function::
             context = run_lambda.MockLambdaContext.Builder()\
                 .set_log_group_name(log_group_name)\
                 .build()
-            patches = {"random.randint", mock.MagicMock(return_value = 5)}
+            patches = {"random.randint", mock.MagicMock(return_value=5)}
             result = run_lambda.run_lambda(my_function.handler, event, context,
                                            patches=patches)
             self.assertEqual(result.value, 50)
