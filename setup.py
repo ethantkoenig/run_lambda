@@ -31,6 +31,7 @@ setup(
     install_requires=["memory_profiler", "mock", "psutil", "six"],
     test_suite="tests",
     entry_points={
-        'console_scripts': ['run_lambda=run_lambda.__main__:main']
+        'console_scripts': ['run_lambda=run_lambda.__main__:main',
+                            'run_lambda_context_template=run_lambda.__gen_context:main']
     }
 )

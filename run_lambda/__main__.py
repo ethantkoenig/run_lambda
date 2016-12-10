@@ -4,7 +4,9 @@ import json
 import os
 import sys
 
-from run_lambda import run_lambda
+import run_lambda.call as call
+import run_lambda.context as context
+
 
 def arguments():
     parser = argparse.ArgumentParser(description="Run AWS Lambda function locally")
@@ -19,6 +21,9 @@ def arguments():
                         dest="timeout", type=int, default=None,
                         help="Timeout (in seconds) for function call. If not provided, "
                              "no timeout will be used.")
+    parser.add_argument("-c", "--context", metavar="CONTEXT_FILENAME", type=str, default=None,
+                        dest="context_file",
+                        help="Filename of file containing JSON context data")
     return parser.parse_args()
 
 
@@ -29,8 +34,18 @@ def load_module(filepath):
     basename = os.path.basename(abspath)
     module_name, extension = os.path.splitext(basename)
     module_info = imp.find_module(module_name)
+    module = imp.load_module(module_name, *module_info)
+
     sys.path.pop(0)
-    return imp.load_module(module_name, *module_info)
+    module_info[0].close()
+    return module
+
+
+def load_context(args):
+    if args.context_file is not None:
+        with open(args.context_file) as context_file:
+            return context.MockLambdaContext.of_json(json.load(context_file))
+    return context.MockLambdaContext.Builder().build()
 
 
 def main():
@@ -41,7 +56,9 @@ def main():
 
     module = load_module(args.filename)
     function = getattr(module, args.function_name)
-    result = run_lambda(function, event, timeout_in_seconds=args.timeout)
+    context = load_context(args)
+    result = call.run_lambda(function, event, context=context,
+                             timeout_in_seconds=args.timeout)
     result.display()
 
 if __name__ == "__main__":

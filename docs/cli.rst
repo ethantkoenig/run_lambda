@@ -13,8 +13,9 @@ Installing the ``run_lambda`` package from the Python Package Index
 information on how to use the tool, run ``run_lambda --help``::
 
     $ run_lambda --help
-    usage: run_lambda_cli.py [-h] [-f HANDLER_FUNCTION] [-t TIMEOUT]
-                             filename event
+    usage: run_lambda [-h] [-f HANDLER_FUNCTION] [-t TIMEOUT]
+                      [-c CONTEXT_FILENAME]
+                      filename event
 
     Run AWS Lambda function locally
 
@@ -29,3 +30,17 @@ information on how to use the tool, run ``run_lambda --help``::
       -t TIMEOUT, --timeout TIMEOUT
                             Timeout (in seconds) for function call. If not
                             provided, no timeout will be used.
+      -c CONTEXT_FILENAME, --context CONTEXT_FILENAME
+                            Filename of file containing JSON context data
+
+To generate a template context data JSON file, use the ``run_lambda_context_template``
+command. For information on how to use it, run ``run_lambda_context_template --help``::
+
+    $ run_lambda_context_template --help
+    usage: run_lambda_context_template [-h] [-o OUTPUT_FILENAME]
+
+    Generate a template context JSON file
+
+    optional arguments:
+      -h, --help          show this help message and exit
+      -o OUTPUT_FILENAME  output file for template, prints to stdout if omitted

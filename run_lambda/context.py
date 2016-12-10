@@ -122,6 +122,34 @@ class MockLambdaContext(object):
         remaining_seconds = diff.total_seconds()
         return max(int(1000 * remaining_seconds), 0)
 
+    @staticmethod
+    def of_json(json):
+        builder = MockLambdaContext.Builder()
+        if "function_name" in json:
+            builder.set_function_name(json["function_name"])
+        if "function_version" in json:
+            builder.set_function_version(json["function_version"])
+        if "invoked_function_arn" in json:
+            builder.set_invoked_function_arn(json["invoked_function_arn"])
+        if "memory_limit_in_mb" in json:
+            builder.set_memory_limit_in_mb(json["memory_limit_in_mb"])
+        if "aws_request_id" in json:
+            builder.set_aws_request_id(json["aws_request_id"])
+        if "log_group_name" in json:
+            builder.set_log_group_name(json["log_group_name"])
+        if "log_stream_name" in json:
+            builder.set_log_stream_name(json["log_stream_name"])
+        if "identity" in json:
+            identity = MockCognitoIdentity.of_json(json["identity"])
+            builder.set_identity(identity)
+        if "client_context" in json:
+            client_context = MockClientContext.of_json(json["client_context"])
+            builder.set_client_context(client_context)
+        if "default_remaining_time_in_millis" in json:
+            builder.set_default_remaining_time_in_millis(
+                json["default_remaining_time_in_millis"])
+        return builder.build()
+
     class Builder(object):
         def __init__(self):
             """
@@ -281,6 +309,13 @@ class MockCognitoIdentity(object):
         """
         return self._identity_pool_id
 
+    @staticmethod
+    def of_json(json):
+        return MockCognitoIdentity(
+            identity_id=json.get("cognito_identity_id", None),
+            identity_pool_id=json.get("cognito_identity_pool_id", None)
+        )
+
 
 class MockClientContext(object):
     def __init__(self, client, custom=None, env=None):
@@ -312,6 +347,18 @@ class MockClientContext(object):
         :rtype: dict
         """
         return self._env
+
+    @staticmethod
+    def of_json(json):
+        if "client" in json:
+            client = MockClientContext.Client.of_json(json["client"])
+        else:
+            client = None
+        return MockClientContext(
+            client=client,
+            custom=json.get("custom", {}),
+            env=json.get("env", {})
+        )
 
     class Client(object):
         def __init__(self, installation_id, app_title, app_version_name,
@@ -361,3 +408,13 @@ class MockClientContext(object):
             :rtype: str
             """
             return self._app_package_name
+
+        @staticmethod
+        def of_json(json):
+            return MockClientContext.Client(
+                installation_id=json.get("installation_id", None),
+                app_title=json.get("app_title", None),
+                app_version_name=json.get("app_version_name", None),
+                app_version_code=json.get("app_version_code", None),
+                app_package_name=json.get("app_package_name", None)
+            )
