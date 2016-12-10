@@ -9,7 +9,7 @@ def random_aws_request_id():
 
 def random_log_stream_name():
     today = datetime.date.today()
-    return "{t}/[$LATEST]{h}".format(t=today.strftime("yyyy/mm/dd"),
+    return "{t}/[$LATEST]{h}".format(t=today.strftime("%Y/%m/%d"),
                                      h=random_hex(32))
 
 

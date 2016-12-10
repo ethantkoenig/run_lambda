@@ -1,13 +1,12 @@
 import logging
-import mock
-import multiprocessing
-import memory_profiler
 import signal
+import sys
 import timeit
 import traceback
-from six import StringIO
 
-import sys
+import memory_profiler
+import mock
+from six import StringIO
 
 from run_lambda import context as context_module
 
@@ -118,7 +117,9 @@ class LambdaResult(object):
             .format(s=str(self._summary), v=self._value,
                     t=self._timed_out, e=repr(self._exception))
 
-    def display(self, outfile=sys.stdout):
+    def display(self, outfile=None):
+        if outfile is None:
+            outfile = sys.stdout
         if self._timed_out:
             outfile.write("Timed out\n\n")
         elif self._exception is not None:
@@ -174,7 +175,9 @@ class LambdaCallSummary(object):
                     m=self._max_memory_used_in_mb,
                     l=repr(self._log))
 
-    def display(self, outfile=sys.stdout):
+    def display(self, outfile=None):
+        if outfile is None:
+            outfile = sys.stdout
         outfile.write("Duration: {} ms\n\n".format(self._duration_in_millis))
         outfile.write("Max memory used: {} MB\n\n"
                       .format(self._max_memory_used_in_mb))
