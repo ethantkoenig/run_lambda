@@ -21,7 +21,7 @@ information on how to use the tool, run ``run_lambda --help``::
 
     positional arguments:
       filename              name of file containing Lambda function
-      event                 filename of file containing JSON event data
+      event                 name of file containing JSON event data
 
     optional arguments:
       -h, --help            show this help message and exit
@@ -33,8 +33,45 @@ information on how to use the tool, run ``run_lambda --help``::
       -c CONTEXT_FILENAME, --context CONTEXT_FILENAME
                             Filename of file containing JSON context data
 
-To generate a template context data JSON file, use the ``run_lambda_context_template``
-command. For information on how to use it, run ``run_lambda_context_template --help``::
+Context JSON
+------------
+
+
+The context JSON data can include the following fields::
+
+    {
+      "aws_request_id": "bf77967d-c53a-5659-9d91-2417e2a3ee58",
+      "client_context": {
+        "client": {
+          "app_package_name": null,
+          "app_title": null,
+          "app_version_code": null,
+          "app_version_name": null,
+          "installation_id": null
+        },
+        "custom": {},
+        "env": {}
+      },
+      "function_name": "my_lambda",
+      "function_version": "$LATEST",
+      "identity": {
+        "cognito_identity_id": null,
+        "cognito_identity_pool_id": null
+      },
+      "invoked_function_arn": "arn:aws:lambda:region-1:813876719243:function:my_lambda",
+      "log_group_name": "/aws/lambda/my_lambda",
+      "log_stream_name": "2016/12/11/[$LATEST]6ac39f0272c07aa3cd548e6d5a9e8881",
+      "memory_limit_in_mb": 128
+    }
+
+Any fields that are not present in the provided context JSON will be populated
+with default values. Any invalid fields (i.e. any fields other than the ones
+listed above) are ignored.
+
+
+To generate a template context data JSON file like the one shown above, use the
+``run_lambda_context_template`` command. For information on how to use the
+command, run ``run_lambda_context_template --help``::
 
     $ run_lambda_context_template --help
     usage: run_lambda_context_template [-h] [-o OUTPUT_FILENAME]
