@@ -7,7 +7,7 @@ import unittest
 import mock
 import six
 
-import run_lambda
+import run_lambda.__main__ as main
 
 
 class RunLambdaCliTest(unittest.TestCase):
@@ -85,7 +85,7 @@ class RunLambdaCliTest(unittest.TestCase):
         output = six.StringIO()
         with mock.patch("sys.stdout", output):
             with mock.patch("sys.argv", arguments):
-                run_lambda.__main__.main()
+                main.main()
         return str(output.getvalue())
 
     @staticmethod
