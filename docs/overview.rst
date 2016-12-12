@@ -8,10 +8,6 @@ Overview
 Python module for automated testing of Lambda functions, as well as a
 command-line interface for ad-hoc local invocations.
 
-To date, ``run_lambda`` has only been tested on Linux systems. If you choose to
-use it on other platforms, please be wary of the memory usage statistics it
-generates.
-
 Installation
 ------------
 

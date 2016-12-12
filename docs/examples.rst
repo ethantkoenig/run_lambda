@@ -13,10 +13,10 @@ Suppose we have a Lambda function in ``my_function.py``::
 
     def handler(event, context):
         logger = logging.getLogger()
+        logger.info("Log group name: %s", context.log_group_name)
         n = event["number"]
         scale = random.randint(1, 10)
         product = n * scale
-        logger.info("Log group name: %s", context.log_group_name)
         return product
 
 
