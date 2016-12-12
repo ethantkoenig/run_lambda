@@ -126,6 +126,7 @@ class RunLambdaTest(unittest.TestCase):
         self.assertIsNone(result.exception)
         self.assertEqual(result.value, 105)
         self.assertTrue(result.summary.duration_in_millis >= 0)
+        self.assertIsInstance(result.summary.duration_in_millis, int)
         self.assertTrue(result.summary.max_memory_used_in_mb >= 0)
         self.assertIsInstance(result.summary.log, str)
         output = six.StringIO()

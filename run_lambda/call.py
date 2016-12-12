@@ -1,4 +1,5 @@
 import logging
+import math
 import signal
 import sys
 import timeit
@@ -188,13 +189,13 @@ class LambdaCallSummary(object):
         def __init__(self, context):
             self._context = context
 
-            self._start_time = timeit.default_timer()
             self._start_mem = memory_profiler.memory_usage()[0]
 
             self._log = StringIO()
             self._log.write("START RequestId: {r} Version: {v}\n".format(
                 r=context.aws_request_id, v=context.function_version
             ))
+            self._start_time = timeit.default_timer()
             self._previous_stdout = sys.stdout
 
             handler = logging.StreamHandler(stream=self._log)
@@ -210,7 +211,7 @@ class LambdaCallSummary(object):
             self._log.write("END RequestId: {r}\n".format(
                 r=self._context.aws_request_id))
 
-            duration_in_millis = int(1000 * (end_time - self._start_time))
+            duration_in_millis = int(math.ceil(1000 * (end_time - self._start_time)))
             # The memory overhead of setting up the AWS Lambda environment
             # (when actually run in AWS) is roughly 14 MB
             max_memory_used_in_mb = (end_mem - self._start_mem) / 1048576 + 14
