@@ -7,10 +7,10 @@ def random_aws_request_id():
     return "-".join(random_hex(l) for l in [8, 4, 4, 4, 12])
 
 
-def random_log_stream_name():
+def random_log_stream_name(version):
     today = datetime.date.today()
-    return "{t}/[$LATEST]{h}".format(t=today.strftime("%Y/%m/%d"),
-                                     h=random_hex(32))
+    return "{t}/[{v}]{h}".format(t=today.strftime("%Y/%m/%d"), v=version,
+                                 h=random_hex(32))
 
 
 def random_hex(length):

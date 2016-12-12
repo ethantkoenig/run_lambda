@@ -20,7 +20,7 @@ def context_json():
         "memory_limit_in_mb": 128,
         "aws_request_id": utils.random_aws_request_id(),
         "log_group_name": "/aws/lambda/my_lambda",
-        "log_stream_name": utils.random_log_stream_name(),
+        "log_stream_name": utils.random_log_stream_name("$LATEST"),
         "identity" : {
             "cognito_identity_id": None,
             "cognito_identity_pool_id": None

@@ -13,18 +13,18 @@ import tests.square_root as square_root
 class RunLambdaTest(unittest.TestCase):
 
     def test_utils(self):
-        for length in range(100):
+        for length in range(10):
             hex_string = utils.random_hex(length)
             self.assertIsInstance(hex_string, str)
             self.assertEqual(len(hex_string), length)
             for character in hex_string:
                 self.assertIn(character, "0123456789abcdef")
-        for _ in range(100):
+        for _ in range(10):
             request_id = utils.random_aws_request_id()
             self.assertIsInstance(request_id, str)
             self.assertGreater(len(request_id), 0)
-        for _ in range(100):
-            stream_name = utils.random_log_stream_name()
+        for _ in range(10):
+            stream_name = utils.random_log_stream_name("$LATEST")
             self.assertIsInstance(stream_name, str)
             self.assertGreater(len(stream_name), 0)
 

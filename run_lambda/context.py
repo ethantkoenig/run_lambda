@@ -157,11 +157,11 @@ class MockLambdaContext(object):
             """
             self._function_name = "function_name"
             self._function_version = "$LATEST"
-            self._invoked_function_arn = "arn:aws:lambda:us-east-1:813876719243:function:my_func"
+            self._invoked_function_arn = None
             self._memory_limit_in_mb = "256"
             self._aws_request_id = utils.random_aws_request_id()
-            self._log_group_name = "/aws/lambda/my_func"
-            self._log_stream_name = utils.random_log_stream_name()
+            self._log_group_name = None
+            self._log_stream_name = None
             self._identity = None
             self._client_context = None
             self._default_remaining_time_in_millis = None
@@ -175,6 +175,14 @@ class MockLambdaContext(object):
             :return: A newly constructed context object
             :rtype: MockLambdaContext
             """
+            if self._invoked_function_arn is None:
+                self._invoked_function_arn = \
+                    "arn:aws:lambda:us-east-1:813876719243:function:" + self._function_name
+            if self._log_group_name is None:
+                self._log_group_name = "/aws/lambda/"+self._function_name
+            if self._log_stream_name is None:
+                self._log_stream_name = utils.random_log_stream_name(self._function_version)
+
             return MockLambdaContext(
                 function_name=self._function_name,
                 function_version=self._function_version,
