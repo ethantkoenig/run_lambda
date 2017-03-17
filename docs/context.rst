@@ -16,9 +16,9 @@ MockLambdaContext class
 MockLambdaContext.Builder class
 -------------------------------
 
-It is strongly encouraged to use the
-:class:`MockLambdaContext.Builder <run_lambda.MockLambdaContext.Builder>` class
-to construct :class:`MockLambdaContext <run_lambda.MockLambdaContext>` instances.
+Using the :class:`MockLambdaContext.Builder <run_lambda.MockLambdaContext.Builder>`
+class to construct :class:`MockLambdaContext <run_lambda.MockLambdaContext>` instances
+is strongly encouraged.
 
 .. autoclass:: run_lambda::MockLambdaContext.Builder()
     :members:
