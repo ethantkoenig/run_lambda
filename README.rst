@@ -1,6 +1,6 @@
 
-Python run_lambda
-=================
+run_lambda
+==========
 
 ``run_lambda`` is a Python package for running Python
 `AWS Lambda <https://aws.amazon.com/lambda/>`_ functions locally. It offers a
