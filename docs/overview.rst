@@ -23,12 +23,13 @@ Features
 --------
 
 ``run_lambda`` supports
-    - An interface for examining the result (return value, exception, timeout) of
-      a function call
-    - A full implementation of AWS Context objects
-    - Function calls with or without a timeout
-    - Resource usage profiling (memory and run-time)
-    - Convenient mocking of objects and services inside Lambda functions
+
+- An interface for examining the result (return value, exception, timeout) of
+  a function call
+- A full implementation of AWS Context objects
+- Function calls with or without a timeout
+- Resource usage profiling (memory and run-time)
+- Convenient mocking of objects and services inside Lambda functions
 
 Installation
 ------------
