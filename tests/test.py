@@ -39,7 +39,7 @@ class RunLambdaTest(unittest.TestCase):
         self.assertEqual(context.function_name, "test_function_name")
         self.assertEqual(context.function_version, "version_1.0")
         self.assertIsInstance(context.invoked_function_arn, str)
-        self.assertEqual(context.memory_limit, "1000")
+        self.assertEqual(context.memory_limit_in_mb, "1000")
         self.assertIsInstance(context.aws_request_id, str)
         self.assertEqual(context.log_group_name, "test_log_group_name")
         self.assertIsInstance(context.log_stream_name, str)
@@ -71,7 +71,7 @@ class RunLambdaTest(unittest.TestCase):
         self.assertIsInstance(context.function_name, str)
         self.assertEqual(context.function_version, "$LATEST")
         self.assertEqual(context.invoked_function_arn, "invoked_function_arn")
-        self.assertIsInstance(context.memory_limit, str)
+        self.assertIsInstance(context.memory_limit_in_mb, str)
         self.assertEqual(context.aws_request_id, "aws_request_id")
         self.assertIsInstance(context.log_group_name, str)
         self.assertEqual(context.log_stream_name, "log_stream_name")
@@ -114,7 +114,7 @@ class RunLambdaTest(unittest.TestCase):
 
     def test_successful_call(self):
         def handle(event_arg, context_arg):
-            return event["number"] + int(context.memory_limit)
+            return event["number"] + int(context.memory_limit_in_mb)
         event = {"number": 5, "other": "ignored"}
         context = context_module.MockLambdaContext.Builder()\
             .set_function_name("test_handle")\

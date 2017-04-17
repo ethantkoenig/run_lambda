@@ -159,7 +159,7 @@ def print_fields(event, context):
     print(context.function_name)
     print(context.function_version)
     print(context.invoked_function_arn)
-    print(context.memory_limit)
+    print(context.memory_limit_in_mb)
     print(context.aws_request_id)
     print(context.log_group_name)
     print(context.log_stream_name)
