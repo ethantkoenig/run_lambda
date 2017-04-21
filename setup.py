@@ -14,7 +14,7 @@ setup(
     version="0.1.4",
     description="Run AWS Lambda functions locally",
     long_description=long_description,
-    url="https://github.com/ethantkoenig/python-run-lambda",
+    url="https://github.com/ethantkoenig/run_lambda",
     author="Ethan Koenig",
     author_email="ethantkoenig@gmail.com",
     license="MIT",
