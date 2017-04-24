@@ -39,4 +39,4 @@ The easiest way to install is via ``pip``::
     $ pip install run_lambda
 
 You can also download the source from
-`Github <https://www.github.com/ethantkoenig/python_run_lambda>`_.
+`Github <https://www.github.com/ethantkoenig/run_lambda>`_.
