@@ -65,7 +65,7 @@ def setup_timeout(context, timeout_in_seconds=None):
         context.activate(timeout_in_seconds)
 
 
-class LambdaTimeout(Exception):
+class LambdaTimeout(BaseException):
     pass
 
 
