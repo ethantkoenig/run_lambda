@@ -43,4 +43,4 @@ You can also download the source from
 Documentation
 -------------
 
-Documentation for the package can be found `here <https://www.pythonhosted.org/run-lambda>`_.
+Documentation for the package can be found `on Read the Docs <http://run-lambda.readthedocs.io>`_.
